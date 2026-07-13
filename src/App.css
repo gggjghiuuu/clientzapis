@@ -120,7 +120,26 @@ body {
   position: relative;
   transition: all 0.2s ease;
 }
+.step-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 
+.step-hint {
+  font-size: 14px;
+  color: var(--text-muted);
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.step-hint strong {
+  color: var(--danger);
+}
 .select-item:hover:not(:disabled) {
   border-color: var(--primary);
   background-color: rgba(99, 102, 241, 0.05);
