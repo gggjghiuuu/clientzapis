@@ -1,0 +1,269 @@
+:root {
+  --bg-main: #0f172a;
+  --bg-card: #1e293b;
+  --border-color: #334155;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --success: #10b981;
+  --danger: #ef4444;
+  --disabled: #1e293b;
+  display: flex;
+  align-items: center;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  width: 100%;
+  /* Включаем flexbox на весь экран */
+  display: flex;
+  justify-content: center; /* Центрирование по горизонтали */
+  align-items: center;     /* Центрирование по вертикали */
+  min-height: 100vh;       /* Высота во весь экран */
+  box-sizing: border-box;
+}
+
+/* На всякий случай фиксируем, чтобы контейнер не растягивался лишнего */
+.booking-container {
+  width: 100%;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Общие стили карточек */
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+
+/* Переключатель типов (Верхняя плашка) */
+.type-selector-card {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+}
+
+.type-btn {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.type-btn.active {
+  background-color: var(--primary);
+  color: var(--text-main);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+/* Шаги и сетка */
+.step-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.step-card.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  user-select: none;
+}
+
+.step-label {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.grid-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+}
+
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+}
+
+/* Кнопки выбора элементов */
+.select-item {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 14px;
+  border-radius: 10px;
+  text-align: left;
+  font-size: 15px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.select-item:hover:not(:disabled) {
+  border-color: var(--primary);
+  background-color: rgba(99, 102, 241, 0.05);
+}
+
+.select-item.selected {
+  border-color: var(--primary);
+  background-color: rgba(99, 102, 241, 0.15);
+  font-weight: 600;
+}
+
+.time-item {
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Занятый слот */
+.select-item.booked {
+  background-color: rgba(239, 68, 68, 0.05);
+  border-color: rgba(239, 68, 68, 0.2);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+.booked-badge {
+  display: block;
+  font-size: 10px;
+  color: var(--danger);
+  text-decoration: none !important;
+  font-weight: bold;
+  margin-top: 2px;
+}
+
+/* Поля ввода */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.input-field input {
+  width: 100%;
+  padding: 14px;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-main);
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input-field input:focus {
+  border-color: var(--primary);
+}
+
+/* Кнопки действия */
+.btn {
+  padding: 14px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-submit {
+  background-color: var(--success);
+  color: #fff;
+  width: 100%;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: #059669;
+}
+
+.btn-submit:disabled {
+  background-color: var(--border-color);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+/* Карточка подтверждения */
+.confirmation-card {
+  text-align: center;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.success-icon {
+  width: 64px;
+  height: 64px;
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 16px;
+}
+
+.confirmation-subtitle {
+  color: var(--text-muted);
+  margin-top: -8px;
+  margin-bottom: 24px;
+}
+
+.confirmation-details {
+  background-color: rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.detail-item {
+  font-size: 15px;
+}
+
+.detail-item strong {
+  color: var(--text-muted);
+  display: inline-block;
+  width: 110px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
