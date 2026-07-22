@@ -4,11 +4,7 @@ import "./App.css";
 const GOOGLE_API_URL =
   "https://script.google.com/macros/s/AKfycbweSbL2CdfEAqvTQaTJSTFs38JtBf_DXmsrDMRJpcNsfKHyNRYhTnXGgIdtco-2ZiIC/exec";
 
-const ADDRESSES = [
-  "Конный переулок д.12",
-  "Ул. Покровка д.38 стр.1",
-  "Цветовой бульвар д.17",
-];
+const ADDRESSES = ["Конный переулок д.12", "Ул. Покровка д.38 стр.1"];
 
 // Разные временные слоты под задачи
 const TEST_DAY_TIME_SLOTS = [
@@ -279,19 +275,30 @@ export default function App() {
         <div className={`card step-card ${!selectedAddress ? "disabled" : ""}`}>
           <label className="step-label">2. Выберите дату записи</label>
           <div className="grid-list days-grid">
-            {DAYS.map((day) => (
-              <button
-                key={day}
-                type="button"
-                disabled={!selectedAddress}
-                className={`select-item ${selectedDay === day ? "selected" : ""}`}
-                onClick={() => {
-                  setSelectedDay(day);
-                  setSelectedTime("");
-                }}>
-                {day}
-              </button>
-            ))}
+            {DAYS.map((day) => {
+              // Проверяем, есть ли уже хотя бы одна запись на эту дату по выбранному адресу
+              const isDayBooked = bookedSlots.some(
+                (slot) =>
+                  slot.address.toString().trim() ===
+                    selectedAddress.toString().trim() &&
+                  slot.day.toString().trim() === day.toString().trim(),
+              );
+
+              return (
+                <button
+                  key={day}
+                  type="button"
+                  disabled={!selectedAddress || isDayBooked}
+                  className={`select-item ${selectedDay === day ? "selected" : ""} ${isDayBooked ? "booked" : ""}`}
+                  onClick={() => {
+                    setSelectedDay(day);
+                    setSelectedTime("");
+                  }}>
+                  {day}
+                  {isDayBooked && <span className="booked-badge">занят</span>}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -301,18 +308,17 @@ export default function App() {
             <label className="step-label">3. Выберите доступное время</label>
             {selectedDay && (
               <span className="step-hint">
-                Занято:{" "}
+                Статус дня:{" "}
                 <strong>
-                  {
-                    bookedSlots.filter(
-                      (slot) =>
-                        slot.address.toString().trim() ===
-                          selectedAddress.toString().trim() &&
-                        slot.day.toString().trim() ===
-                          selectedDay.toString().trim(),
-                    ).length
-                  }{" "}
-                  из {activeTimeSlots.length}
+                  {bookedSlots.some(
+                    (slot) =>
+                      slot.address.toString().trim() ===
+                        selectedAddress.toString().trim() &&
+                      slot.day.toString().trim() ===
+                        selectedDay.toString().trim(),
+                  )
+                    ? "Занят"
+                    : "Свободен"}
                 </strong>
               </span>
             )}
@@ -320,24 +326,23 @@ export default function App() {
 
           <div className="grid-list time-grid">
             {activeTimeSlots.map((time) => {
-              const isBooked = bookedSlots.some(
+              // День считается занятым целиком, если есть хоть одна запись на эту дату и адрес
+              const isDayBooked = bookedSlots.some(
                 (slot) =>
                   slot.address.toString().trim() ===
                     selectedAddress.toString().trim() &&
-                  slot.day.toString().trim() ===
-                    selectedDay.toString().trim() &&
-                  slot.time.toString().trim() === time.toString().trim(),
+                  slot.day.toString().trim() === selectedDay.toString().trim(),
               );
 
               return (
                 <button
                   key={time}
                   type="button"
-                  disabled={!selectedDay || isBooked}
-                  className={`select-item time-item ${selectedTime === time ? "selected" : ""} ${isBooked ? "booked" : ""}`}
+                  disabled={!selectedDay || isDayBooked}
+                  className={`select-item time-item ${selectedTime === time ? "selected" : ""} ${isDayBooked ? "booked" : ""}`}
                   onClick={() => setSelectedTime(time)}>
                   {time}
-                  {isBooked && <span className="booked-badge">занят</span>}
+                  {isDayBooked && <span className="booked-badge">занят</span>}
                 </button>
               );
             })}
