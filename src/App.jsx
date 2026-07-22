@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
-const GOOGLE_API_URL =
-  "https://script.google.com/macros/s/AKfycbweSbL2CdfEAqvTQaTJSTFs38JtBf_DXmsrDMRJpcNsfKHyNRYhTnXGgIdtco-2ZiIC/exec";
+const GOOGLE_API_URL = import.meta.env.VITE_GOOGLE_API_URL;
 
 const ADDRESSES = ["Конный переулок д.12", "Ул. Покровка д.38 стр.1"];
 
@@ -309,7 +308,7 @@ export default function App() {
             {selectedDay && (
               <span className="step-hint">
                 Статус дня:{" "}
-                <strong>
+                <strong className="step-dayboolean">
                   {bookedSlots.some(
                     (slot) =>
                       slot.address.toString().trim() ===

@@ -168,7 +168,7 @@ body {
 }
 
 .step-hint strong {
-  color: var(--danger);
+  color: #7cef44;
 }
 .select-item:hover:not(:disabled) {
   border-color: var(--primary);
